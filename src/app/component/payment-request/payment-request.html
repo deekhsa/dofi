@@ -1,0 +1,301 @@
+<ng-template #tariffDetailEntryTemplate let-modal>
+    <div class="col-12">
+      <div class="modal-header modalHeaderpart">
+        <h4 class="modal-title">Payment Request</h4>
+        <button type="button" class="btn-close btn-close-white" aria-label="Close"
+          (click)="modal.dismiss('Cross click')"></button>
+      </div>
+  
+      <div class="modal-body py-3">
+        <form [formGroup]="paymentDetailsForm">
+          <div class="row g-3">
+            <div class="col-md-3">
+                <label for="paymentRequestNo" class="form-label">
+                  Request No
+                </label>
+                <input type="text" id="paymentRequestNo" class="form-control"
+                       formControlName="paymentRequestNo" readonly placeholder="Auto-generated">
+                       <div class="small text-danger">
+                        <span
+                          [class.invisible]="!(paymentDetailsForm.get('paymentRequestNo')?.touched &&
+                                              paymentDetailsForm.get('paymentRequestNo')?.hasError('required'))">
+                          Required
+                        </span>
+                    </div>
+            </div>
+            <div class="col-md-3">
+                <label for="paymentRequestDate" class="form-label">
+                  Request Date <span class="text-danger">*</span>
+                </label>
+                <div class="input-group">
+                  <input class="form-control" placeholder="dd-mm-yyyy"
+                         ngbDatepicker #d1="ngbDatepicker" (click)="d1.toggle()"
+                         readonly formControlName="paymentRequestDate">
+                  <!-- <button class="btn btn-outline-secondary" type="button" (click)="d1.toggle()">
+                    <i-feather name="calendar" class="feather-sm"></i-feather>
+                  </button> -->
+                </div>
+                <div class="small text-danger">
+                  <span
+                    [class.invisible]="!(paymentDetailsForm.get('paymentRequestDate')?.touched &&
+                                        paymentDetailsForm.get('paymentRequestDate')?.hasError('required'))">
+                    Required
+                  </span>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+                <label for="PaymentType" class="form-label">
+                  Cash/Bank <span class="text-danger">*</span>
+                </label>
+                <select class="form-select" formControlName="PaymentType">
+                  <option value="" disabled>Select Payment Type</option>
+                  <option *ngFor="let payment of paymentTypes" [value]="payment">{{ payment }}</option>
+                </select>
+                <div class="small text-danger">
+                  <span
+                    [class.invisible]="!(paymentDetailsForm.get('PaymentType')?.touched &&
+                                        paymentDetailsForm.get('PaymentType')?.hasError('required'))">
+                    Required
+                  </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+                <label for="PaymentDepartment" class="form-label">
+                  Dept. <span class="text-danger">*</span>
+                </label>
+                <select class="form-select" formControlName="PaymentDepartment">
+                  <option *ngFor="let dept of Department" [value]="dept">{{ dept }}</option>
+                </select>
+                <div class="small text-danger">
+                  <span
+                    [class.invisible]="!(paymentDetailsForm.get('PaymentDepartment')?.touched &&
+                                        paymentDetailsForm.get('PaymentDepartment')?.hasError('required'))">
+                    Required
+                  </span>
+              </div>
+            </div>
+            <div class="col-md-3">
+                  <label for="paymentParty" class="form-label">
+                    Party <span class="text-danger">*</span>
+                  </label>
+                  <select class="form-select" formControlName="paymentParty">
+                    <option *ngFor="let data of party" [value]="data">{{ data }}</option>
+                  </select>
+                  <div class="small text-danger">
+                    <span
+                      [class.invisible]="!(paymentDetailsForm.get('paymentParty')?.touched &&
+                                          paymentDetailsForm.get('paymentParty')?.hasError('required'))">
+                      Required
+                    </span>
+                </div>
+              </div>
+                <div class="col-md-3">
+                  <label for="PaymentPayableTo" class="form-label">
+                    Payable To<span class="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="PaymentPayableTo"
+                    class="form-control"
+                    formControlName="PaymentPayableTo"
+                    style="background-color: white;"
+                  />
+                  <div class="small text-danger">
+                    <span
+                      [class.invisible]="!(paymentDetailsForm.get('PaymentPayableTo')?.touched &&
+                                          paymentDetailsForm.get('PaymentPayableTo')?.hasError('required'))">
+                      Required
+                    </span>
+                </div>
+                  
+                </div>
+                    <div class="col-md-3">
+                      <label for="text-input" class="form-label">
+                        Currency <span class="text-danger">*</span>
+                      </label>
+                  
+                      <ng-select
+                        id="paymentCurrency"
+                        class="w-100"
+                        [items]="currencyList"
+                        bindLabel="currencyName"
+                        bindValue="CurrencyValue"
+                        formControlName="paymentCurrency"
+                        [searchable]="true"
+                      >
+                      </ng-select>
+                      <div class="small text-danger">
+                        <span
+                          [class.invisible]="!(paymentDetailsForm.get('paymentCurrency')?.touched &&
+                                              paymentDetailsForm.get('paymentCurrency')?.hasError('required'))">
+                          Required
+                        </span>
+                    </div>
+                      
+                    </div>            
+              <div class="col-md-3">
+                  <label for="PaymentRequestStatus" class="form-label">
+                    Request Status <span class="text-danger">*</span>
+                  </label>
+                  <ng-select
+                    [items]="paymentRequestStatuses"
+                    bindLabel="label"
+                    bindValue="value"
+                    formControlName="PaymentRequestStatus"
+                    class="w-100">
+                  </ng-select>
+                  <div class="small text-danger">
+                    <span
+                      [class.invisible]="!(paymentDetailsForm.get('PaymentRequestStatus')?.touched &&
+                                          paymentDetailsForm.get('PaymentRequestStatus')?.hasError('required'))">
+                      Required
+                    </span>
+                </div>
+              </div>
+              <div class="col-md-2">
+                  <label for="PaymentBookingNo" class="form-label">
+                    Booking No <span class="text-danger">*</span>
+                  </label>
+                  <input type="text" id="PaymentBookingNo" class="form-control"
+                         formControlName="PaymentBookingNo">
+                         <div class="small text-danger">
+                          <span
+                            [class.invisible]="!(paymentDetailsForm.get('PaymentBookingNo')?.touched &&
+                                                paymentDetailsForm.get('PaymentBookingNo')?.hasError('required'))">
+                            Required
+                          </span>
+                      </div>
+              </div> 
+              <div class="col-md-2">
+                  <label for="PaymentHBLNo" class="form-label">
+                    HBL No <span class="text-danger">*</span>
+                  </label>
+                  <input type="text" id="PaymentHBLNo" class="form-control"
+                         formControlName="PaymentHBLNo">
+                         <div class="small text-danger">
+                          <span
+                            [class.invisible]="!(paymentDetailsForm.get('PaymentHBLNo')?.touched &&
+                                                paymentDetailsForm.get('PaymentHBLNo')?.hasError('required'))">
+                            Required
+                          </span>
+                      </div>
+              </div> 
+              <div class="col-md-2">
+                  <label for="PaymentMBLNo" class="form-label">
+                    MBL No <span class="text-danger">*</span>
+                  </label>
+                  <input type="text" id="PaymentMBLNo" class="form-control"
+                         formControlName="PaymentMBLNo">
+                         <div class="small text-danger">
+                          <span
+                            [class.invisible]="!(paymentDetailsForm.get('PaymentMBLNo')?.touched &&
+                                                paymentDetailsForm.get('PaymentMBLNo')?.hasError('required'))">
+                            Required
+                          </span>
+                      </div>
+              </div> 
+              <div class="col-md-4">
+                  <label for="PaymentRemarks" class="form-label">
+                    Remarks<span class="text-danger">*</span>
+                  </label>
+                  <input type="text" id="PaymentRemarks" class="form-control"
+                         formControlName="PaymentRemarks">
+                         <div class="small text-danger">
+                          <span
+                            [class.invisible]="!(paymentDetailsForm.get('PaymentRemarks')?.touched &&
+                                                paymentDetailsForm.get('PaymentRemarks')?.hasError('required'))">
+                            Required
+                          </span>
+                      </div>
+              </div> 
+              <div class="col-md-2">
+                  <label for="paymentStatus" class="form-label">
+                    Status <span class="text-danger">*</span>
+                  </label>
+                  <select class="form-select" formControlName="paymentStatus">
+                    <option *ngFor="let data of status" [value]="data">{{ data }}</option>
+                  </select>
+                  <div class="small text-danger">
+                    <span
+                      [class.invisible]="!(paymentDetailsForm.get('paymentStatus')?.touched &&
+                                          paymentDetailsForm.get('paymentStatus')?.hasError('required'))">
+                      Required
+                    </span>
+                </div>
+              </div>
+              
+          </div>
+        </form>                       
+        <div class="table-responsive mt-1">
+          <table class="table table-hover table-sm align-middle mb-0 table-borderless text-center">
+            <thead>
+              <tr class="text-center align-middle" style="background-color: #05608D !important; white-space: nowrap;">
+                <th class="bg-transparent text-light p-2">
+                  <input type="checkbox" id="selectAll">
+                </th>
+                <th class="bg-transparent text-light p-2">Charge</th>
+                <th class="bg-transparent text-light p-2">Unit</th>
+                <th class="bg-transparent text-light p-2">No. of Unit</th>
+                <th class="bg-transparent text-light p-2">Curr.</th>
+                <th class="bg-transparent text-light p-2">Ex. Rate</th>
+                <th class="bg-transparent text-light p-2">Per Unit</th>
+                <th class="bg-transparent text-light p-2">Amt</th>
+                <th class="bg-transparent text-light p-2">Local Amt</th>
+                <th class="bg-transparent text-light p-2">Party</th>
+              </tr>
+            </thead>
+        
+            <tbody>
+              <tr *ngFor="let row of tableRows; let i = index">
+                <td><input type="checkbox"></td>
+                <td><input type="text" class="form-control form-control-sm text-center" [(ngModel)]="row.charge" /></td>
+                <td><input type="text" class="form-control form-control-sm text-center" [(ngModel)]="row.unit" /></td>
+                <td><input type="number" class="form-control form-control-sm text-center" [(ngModel)]="row.numOfUnit"/></td>
+                <td><input type="text" class="form-control form-control-sm text-center" [(ngModel)]="row.currency" /></td>
+                <td><input type="number" class="form-control form-control-sm text-center" [(ngModel)]="row.exRate"/></td>
+                <td><input type="number" class="form-control form-control-sm text-center" [(ngModel)]="row.perUnit"/></td>
+                <td><input type="number" class="form-control form-control-sm text-center" [(ngModel)]="row.amount"/></td>
+                <td><input type="number" class="form-control form-control-sm text-center" [(ngModel)]="row.localAmt"/></td>
+                <td><input type="text" class="form-control form-control-sm text-center" [(ngModel)]="row.party" /></td>
+              </tr>
+            </tbody>
+    
+            <tfoot>
+              <tr>
+                <td colspan="8" class="text-end"></td>
+                <td class="text-center">
+                  <input type="number" class="form-control form-control-sm text-center fw-bold" [value]="totalLocalAmt" readonly />
+                </td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        
+                
+      </div>
+  
+      <div class="modal-footer" >
+          <button type="button" class="btn btn-secondary" (click)="modalRef.close()">Back</button>
+          <button type="button" class="btn btn-secondary" (click)="onAttachDocument()">Attach Document</button>
+          <input 
+            type="file" 
+            #fileInput 
+            accept=".pdf, .xls, .xlsx" 
+            style="display: none" 
+            (change)="onFileSelected($event)"
+          />
+          <button type="button" class="btn" (click)="onAddRow()" style="background-color: #05608D !important; color: white; white-space: nowrap;">Add</button>   
+          <button type="button" class="btn" (click)="onModalSave()" style="background-color: #05608D !important; color: white; white-space: nowrap;">Save</button>
+      </div>
+      
+    </div>
+  </ng-template>
+  
+  <div class="mt-2">
+    <button class="btn btn-info btn-sm dofi-min-w-80 dofi-max-w-80"
+            (click)="openTariffDetailEntryModal(tariffDetailEntryTemplate)">Generate Voucher
+    </button>
+  </div>
+  
