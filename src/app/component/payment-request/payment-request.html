@@ -110,49 +110,52 @@
                 </div>
                   
                 </div>
-                    <div class="col-md-3">
-                      <label for="text-input" class="form-label">
-                        Currency <span class="text-danger">*</span>
-                      </label>
-                  
-                      <ng-select
-                        id="paymentCurrency"
-                        class="w-100"
-                        [items]="currencyList"
-                        bindLabel="currencyName"
-                        bindValue="CurrencyValue"
-                        formControlName="paymentCurrency"
-                        [searchable]="true"
-                      >
-                      </ng-select>
-                      <div class="small text-danger">
-                        <span
-                          [class.invisible]="!(paymentDetailsForm.get('paymentCurrency')?.touched &&
-                                              paymentDetailsForm.get('paymentCurrency')?.hasError('required'))">
-                          Required
-                        </span>
-                    </div>
-                      
-                    </div>            
-              <div class="col-md-3">
+                <div class="col-md-3">
+                  <label for="paymentCurrency" class="form-label">
+                    Currency <span class="text-danger">*</span>
+                  </label>
+                  <ng-select
+                    id="paymentCurrency"
+                    [items]="currencyList"
+                    bindLabel="currencyName"
+                    bindValue="CurrencyValue"
+                    formControlName="paymentCurrency"
+                    [searchable]="true"
+                    class="form-control bg-white border rounded-2 w-100">
+                  </ng-select>
+                  <div class="small text-danger mt-1">
+                    <span
+                      [class.invisible]="!(
+                        paymentDetailsForm.get('paymentCurrency')?.touched &&
+                        paymentDetailsForm.get('paymentCurrency')?.hasError('required')
+                      )">
+                      Required
+                    </span>
+                  </div>
+                </div>
+                
+                <div class="col-md-3">
                   <label for="PaymentRequestStatus" class="form-label">
                     Request Status <span class="text-danger">*</span>
                   </label>
                   <ng-select
+                    id="PaymentRequestStatus"
                     [items]="paymentRequestStatuses"
                     bindLabel="label"
                     bindValue="value"
                     formControlName="PaymentRequestStatus"
-                    class="w-100">
+                    class="form-control bg-white border rounded-2 w-100">
                   </ng-select>
-                  <div class="small text-danger">
+                  <div class="small text-danger mt-1">
                     <span
-                      [class.invisible]="!(paymentDetailsForm.get('PaymentRequestStatus')?.touched &&
-                                          paymentDetailsForm.get('PaymentRequestStatus')?.hasError('required'))">
+                      [class.invisible]="!(
+                        paymentDetailsForm.get('PaymentRequestStatus')?.touched &&
+                        paymentDetailsForm.get('PaymentRequestStatus')?.hasError('required')
+                      )">
                       Required
                     </span>
+                  </div>
                 </div>
-              </div>
               <div class="col-md-2">
                   <label for="PaymentBookingNo" class="form-label">
                     Booking No <span class="text-danger">*</span>
@@ -230,9 +233,15 @@
         <div class="table-responsive mt-1">
           <table class="table table-hover table-sm align-middle mb-0 table-borderless text-center">
             <thead>
-              <tr class="text-center align-middle" style="background-color: #05608D !important; white-space: nowrap;">
+              <tr style="background-color: #05608D !important;">
                 <th class="bg-transparent text-light p-2">
-                  <input type="checkbox" id="selectAll">
+                  <input 
+                    type="checkbox"
+                    id="selectAll"
+                    [(ngModel)]="headerChecked"
+                    (change)="toggleSelectAll()"
+                    style="accent-color: white;"
+                  />
                 </th>
                 <th class="bg-transparent text-light p-2">Charge</th>
                 <th class="bg-transparent text-light p-2">Unit</th>
@@ -245,32 +254,31 @@
                 <th class="bg-transparent text-light p-2">Party</th>
               </tr>
             </thead>
-        
+          
             <tbody>
               <tr *ngFor="let row of tableRows; let i = index">
-                <td><input type="checkbox"></td>
+                <td>
+                  <input
+                    type="checkbox"
+                    [(ngModel)]="row.selected"
+                    (change)="onRowSelectionChange()"
+                    style="accent-color: #05608D;"
+                  />
+                </td>
                 <td><input type="text" class="form-control form-control-sm text-center" [(ngModel)]="row.charge" /></td>
                 <td><input type="text" class="form-control form-control-sm text-center" [(ngModel)]="row.unit" /></td>
-                <td><input type="number" class="form-control form-control-sm text-center" [(ngModel)]="row.numOfUnit"/></td>
                 <td><input type="text" class="form-control form-control-sm text-center" [(ngModel)]="row.currency" /></td>
-                <td><input type="number" class="form-control form-control-sm text-center" [(ngModel)]="row.exRate"/></td>
-                <td><input type="number" class="form-control form-control-sm text-center" [(ngModel)]="row.perUnit"/></td>
-                <td><input type="number" class="form-control form-control-sm text-center" [(ngModel)]="row.amount"/></td>
-                <td><input type="number" class="form-control form-control-sm text-center" [(ngModel)]="row.localAmt"/></td>
                 <td><input type="text" class="form-control form-control-sm text-center" [(ngModel)]="row.party" /></td>
+                <td><input type="number" class="form-control form-control-sm text-center" [(ngModel)]="row.numOfUnit" /></td>
+                <td><input type="number" class="form-control form-control-sm text-center" [(ngModel)]="row.exRate" /></td>
+                <td><input type="number" class="form-control form-control-sm text-center" [(ngModel)]="row.perUnit" /></td>
+                <td><input type="number" class="form-control form-control-sm text-center" [(ngModel)]="row.amount" /></td>
+                <td><input type="number" class="form-control form-control-sm text-center" [(ngModel)]="row.localAmt" /></td>
               </tr>
             </tbody>
-    
-            <tfoot>
-              <tr>
-                <td colspan="8" class="text-end"></td>
-                <td class="text-center">
-                  <input type="number" class="form-control form-control-sm text-center fw-bold" [value]="totalLocalAmt" readonly />
-                </td>
-                <td></td>
-              </tr>
-            </tfoot>
           </table>
+          
+          
         </div>
         
                 

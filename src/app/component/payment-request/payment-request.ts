@@ -17,6 +17,7 @@ export class PaymentRequest implements OnInit {
   uploadedFileName: string | null = null;
   tableRows: any[] = [];
   totalLocalAmt: number = 0;
+  headerChecked = false;
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
@@ -42,6 +43,30 @@ export class PaymentRequest implements OnInit {
   ngOnInit(): void {
     this.initDetailsForm();
   }
+
+
+  validateNumberInput(event: any) {
+    const input = event.target;
+    const value = input.value.trim();
+    if (value === '') return;
+    if (isNaN(Number(value)) || !/^\d*\.?\d*$/.test(value)) {
+      input.value = '';
+      input.classList.add('is-invalid');
+    }else{
+      input.classList.remove('is-invalid');
+    }
+  }
+
+toggleSelectAll() {
+  this.tableRows.forEach(row => (row.selected = this.headerChecked));
+}
+
+onRowSelectionChange() {
+  this.headerChecked = this.tableRows.every(row => row.selected);
+}
+
+  
+  
 
   onAddRow() {
     const newRow = {
